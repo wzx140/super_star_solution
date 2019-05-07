@@ -8,8 +8,9 @@
 2. `pip install -r requirements` 导入依赖
 
 ## 使用
-`cd Super_star_solution`
 ```
+> git clone git@github.com:wzx140/super_star_solution.git
+> cd Super_star_solution
 > python -m start -h
 usage: start.py [-h] [-save [SAVE] | -load [LOAD]]
 
