@@ -101,10 +101,10 @@ class SuperStar(object):
                         self.__driver.switch_to.frame(
                             self.__driver.find_element_by_css_selector(
                                 'iframe[objectid="{objectid}"]'.format(objectid=objectid)))
-                        self.__driver.find_element_by_css_selector('button[title="播放视频"]').click()
-                        # 网络不好时，增长暂停时间
-                        time.sleep(5)
-                        self.__driver.find_element_by_css_selector('button[title="暂停"]').click()
+                        WebDriverWait(self.__driver, 5).until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="播放视频'))).click()
+                        WebDriverWait(self.__driver, 5).until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="暂停"]'))).click()
                         # 网络不好时，增长暂停时间
                         time.sleep(5)
                         # 计算等待时间
