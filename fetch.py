@@ -55,6 +55,9 @@ class SuperStar(object):
             EC.presence_of_element_located((By.ID, "frame_content"))
         )
         self.__driver.switch_to.frame(frame)
+        WebDriverWait(self.__driver, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, ".zmodel li[style]"))
+        )
         videos = self.__driver.find_elements_by_css_selector('.zmodel li[style]')
         video_list = []
         for video in videos:
@@ -71,12 +74,21 @@ class SuperStar(object):
         )
         units = self.__driver.find_elements_by_css_selector(".timeline .units")
         for unit in units:
+            # 二级标题
             sections = unit.find_elements_by_css_selector('.leveltwo')
             for section in sections:
                 chapter_id = section.find_element_by_css_selector('.chapterNumber').text
                 link = section.find_element_by_css_selector('a').get_attribute('href')
                 sign = section.find_element_by_css_selector('.clearfix em').get_attribute('class')
                 tasks.append((chapter_id, link, sign))
+                # 三级标题
+                sub_sections =section.find_elements_by_css_selector('.levelthree h3')
+                for sub_section in sub_sections:
+                    sub_chapter_id = sub_section.find_element_by_css_selector('.chapterNumber').text
+                    sub_link = sub_section.find_element_by_css_selector('a').get_attribute('href')
+                    sub_sign = sub_section.find_element_by_css_selector('.clearfix em').get_attribute('class')
+                    tasks.append((sub_chapter_id, sub_link, sub_sign))
+
         for task in tasks:
             chapter_id, link, sign = task
             if sign == 'orange':
@@ -133,7 +145,7 @@ class SuperStar(object):
                 else:
                     # 一个页面一个视频
                     self.__driver.switch_to.frame(
-                        self.__driver.find_element_by_css_selector('iframe[src="{src}"]'.format(src=videos[0])))
+                        self.__driver.find_element_by_css_selector('iframe[objectid="{objectid}"]'.format(objectid=objectids[0])))
                     self.__driver.find_element_by_css_selector('button[title="播放视频"]').click()
                     time.sleep(2)
                     self.__driver.find_element_by_css_selector('button[title="暂停"]').click()
